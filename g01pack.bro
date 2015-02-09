@@ -55,7 +55,7 @@ function generate_g01pack_name(dict: vector of string, offset: interval): string
 function generate_g01pack_names(): set[string]
 	{
 	local results: set[string] = set();
-	for ( offset in offsets )
+	for ( offset in hour_offsets )
 		{
 		for ( dict in g01pack_dicts )
 			{

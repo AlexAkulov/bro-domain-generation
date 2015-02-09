@@ -9,9 +9,13 @@
 module DomainGeneration;
 
 export { 
-	## The hour offsets that you would like to generate names for.
+	## For daily DGAs, the day offsets that you would like to generate names for.
 	## Domain names for all of the hour offsets specified will be generated.
-	const offsets: set[interval] = set(-2hrs,-1hrs,0hrs,1hrs,2hrs) &redef;
+	const day_offsets: set[interval] = set(-1days,0days,1days) &redef;
+
+	## For hourly DGAs, the hour offsets that you would like to generate names for.
+	## Domain names for all of the hour offsets specified will be generated.
+	const hour_offsets: set[interval] = set(-2hrs,-1hrs,0hrs,1hrs,2hrs) &redef;
 
 	redef enum Notice::Type += {
 		## A computed name from a domain generation algorithm was detected.

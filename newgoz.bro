@@ -132,16 +132,16 @@ event update_newgoz_current_names()
 	{
 	local now = network_time();
 
-	# We generate domains for yesterday, today, and tomorrow, in case
-	# an infected client has some clock drift or a different timezone
-
 	newgoz_current_names = set();
 
-	generate_newgoz_domains(now - 1day);
-	generate_newgoz_domains(now);
-	generate_newgoz_domains(now + 1day);
+	for ( offset in day_offsets )
+		{
+		generate_newgoz_domains(now - 1day);
+		generate_newgoz_domains(now);
+		generate_newgoz_domains(now + 1day);
+		}
 
-	schedule 60mins { update_newgoz_current_names() };
+	schedule 12hrs { update_newgoz_current_names() };
 	}
 
 event bro_init()
