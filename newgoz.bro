@@ -99,11 +99,14 @@ function generate_newgoz_domain(sequence_number: count, year: count, month: coun
 	return domain;
 	}
 
-function generate_newgoz_domains(date: time): set[string]
+function generate_newgoz_domains(date: time, offset: interval): set[string]
 	{
-	local year = to_count(strftime("%Y", date));
-	local month = to_count(strftime("%m", date));
-	local day = to_count(strftime("%d", date));
+	local ts = strftime("%Y %m %d", network_time_for_strftime() + offset);
+	local parts = split(ts, / /);
+
+	local year = to_count(parts[1]);
+	local month = to_count(parts[2]);
+	local day = to_count(parts[3]);
 
 	local result: set[string] = set();
 
@@ -135,11 +138,7 @@ event update_newgoz_current_names()
 	newgoz_current_names = set();
 
 	for ( offset in day_offsets )
-		{
-		generate_newgoz_domains(now - 1day);
-		generate_newgoz_domains(now);
-		generate_newgoz_domains(now + 1day);
-		}
+		generate_newgoz_domains(now, offset);
 
 	schedule 12hrs { update_newgoz_current_names() };
 	}
