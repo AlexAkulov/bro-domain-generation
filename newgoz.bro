@@ -5,13 +5,13 @@
 ##!
 ##! Requires: Bro 2.1+
 ##! Author:   Vlad Grigorescu <vlad@broala.com>
-##! 
+##!
 
 @load ./utils
 
 module DomainGeneration;
 
-export { 
+export {
 	## These are the current names based on the number of hours being offset
 	## and calculated.
 	global newgoz_current_names: set[string] = set();
@@ -32,7 +32,7 @@ function get_seed(sequence_number: count, year: count, month: count, day: count)
 	{
 	local key = "\x01\x05\x19\x35";
 	local seed = md5_hash_init();
-	
+
 	# 1. Sequence number (uint32 in little-endian format)
 	md5_hash_update(seed, hexstr_to_bytestring(fmt("%2x", sequence_number % 256)));
 	md5_hash_update(seed, hexstr_to_bytestring(fmt("%2x", sequence_number / 256)));
@@ -95,14 +95,14 @@ function generate_newgoz_domain(sequence_number: count, year: count, month: coun
 	else if ( sequence_number % 3 == 0 ) domain += ".org";
 	else if ( sequence_number % 2 == 0 ) domain += ".biz";
 	else                                 domain += ".net";
-		
+
 	return domain;
 	}
 
 function generate_newgoz_domains(date: time, offset: interval): set[string]
 	{
 	local ts = strftime("%Y %m %d", network_time_for_strftime() + offset);
-	local parts = split(ts, / /);
+	local parts = split_string(ts, / /);
 
 	local year = to_count(parts[1]);
 	local month = to_count(parts[2]);
@@ -113,7 +113,7 @@ function generate_newgoz_domains(date: time, offset: interval): set[string]
 	local daily_domains = 1000;
 	local todo = vector(0);
 	local sequence_number: count = 0;
-	
+
 	for ( i in todo )
 		{
 		local d = generate_newgoz_domain(sequence_number, year, month, day);

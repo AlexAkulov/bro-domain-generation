@@ -7,13 +7,13 @@
 ##!
 ##! Requires: Bro 2.1+
 ##! Author:   Seth Hall <seth@icir.org>
-##! 
+##!
 
 @load ./utils
 
 module DomainGeneration;
 
-export { 
+export {
 	## These are the current names based on the number of hours being offset
 	## and calculated.
 	global g01pack_current_names: set[string] = set();
@@ -28,7 +28,7 @@ global g01pack_dicts: table[count] of vector of string = table();
 function generate_g01pack_name(dict: vector of string, offset: interval): string
 	{
 	local ts = strftime("%Y %m %d %H", network_time_for_strftime() + offset);
-	local parts =  split(ts, / /);
+	local parts =  split_string(ts, / /);
 	local c0 = to_count(parts[4]);
 	local c1 = to_count(parts[3]) + c0;
 	local c2 = to_count(parts[2]) + c1 - 1;
@@ -82,4 +82,3 @@ event bro_init()
 
 	event update_g01pack_current_names();
 	}
-

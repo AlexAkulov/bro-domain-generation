@@ -2,13 +2,13 @@
 ##!
 ##! Requires: Bro 2.1+
 ##! Author:   Seth Hall <seth@icir.org>
-##! 
+##!
 
 @load base/frameworks/notice
 
 module DomainGeneration;
 
-export { 
+export {
 	## For daily DGAs, the day offsets that you would like to generate names for.
 	## Domain names for all of the hour offsets specified will be generated.
 	const day_offsets: set[interval] = set(-1days,0days,1days) &redef;
